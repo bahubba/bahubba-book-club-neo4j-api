@@ -1,0 +1,58 @@
+spring:
+  datasource:
+    platform: postgresql
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${BOOK_CLUB_DB_HOST}/${BOOK_CLUB_DB_NAME:book_club} #jdbc:postgresql://${BOOK_CLUB_DB_HOST:127.0.0.1}:${BOOK_CLUB_DB_PORT:5432}/${BOOK_CLUB_DB_NAME:book_club}
+    username: ${BOOK_CLUB_DB_USERNAME:postgres}
+    password: ${BOOK_CLUB_DB_PASSWORD}
+  jpa:
+#    generate-ddl: true
+    properties:
+      hibernate:
+        default_schema: ${BOOK_CLUB_DB_SCHEMA:public}
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    user:
+      name: ${BOOK_CLUB_USER_NAME}
+      password: ${BOOK_CLUB_USER_PASSWORD}
+
+logging:
+  level:
+    org.springframework: info
+    org.hibernate: info
+#    com:
+#      amazonaws:
+#        util:
+#          EC2MetadataUtils: error
+
+server:
+  port: ${BOOK_CLUB_APP_PORT:8443}
+  ssl:
+    key-store-type: ${BC_KEYSTORE_TYPE:PKCS12}
+    key-store: ${BC_KEYSTORE:classpath:BBCMDev.p12}
+    key-store-password: ${BC_KEYSTORE_PW:bbcmDev}
+    key-alias: ${BC_KEYSTORE_ALIAS:BBCMDev}
+
+security:
+  require-ssl: true
+
+app:
+  properties:
+    secret_key: ${BOOK_CLUB_SECRET_KEY}
+    auth_cookie_name: ${BOOK_CLUB_AUTH_COOKIE:bbcm_auth}
+    refresh_cookie_name: ${BOOK_CLUB_REFRESH_COOKIE:bbcm_refresh}
+
+aws:
+  region:
+    static: ${AWS_REGION:us-east-1}
+  credentials:
+    profile-name: ${BBCM_AWS_PROFILE}
+  s3:
+    bucket: ${BBCM_S3_BUCKET}
